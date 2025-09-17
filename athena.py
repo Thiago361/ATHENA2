@@ -1,9 +1,10 @@
-import time;
+import time
 from init import athena_intro
-from athenabrain import responder
-from functions import carregarJson
-from colorama import Fore
-from functions import salvarMsg
+from Athenabrain import responder
+from functions import carregarJson, salvarMsg
+from colorama import Fore, init
+
+init()
 
 if __name__ == "__main__":
     athena_intro()

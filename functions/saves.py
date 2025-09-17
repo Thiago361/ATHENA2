@@ -6,7 +6,7 @@ load_dotenv()
 ARQUIVO = "config.json"
 ARQUIVO_CONVERSAS = "contextoCvs.json"
     
-def salvarJson(nome: str, cidade: str, estilobot: str, ): 
+def salvarJson(nome: str, cidade: str): 
     
     if os.path.exists(ARQUIVO):
         with open(ARQUIVO, "r", encoding="utf-8") as f:
@@ -14,7 +14,9 @@ def salvarJson(nome: str, cidade: str, estilobot: str, ):
                 config = json.load(f)
             except json.JSONDecodeError:
                 config = {}
-            
+    else:
+        config = {}
+    
     config["configUsu"] = {
         "nomeUsuario": nome,
         "cidadeUsuario": cidade,
@@ -39,13 +41,15 @@ def salvarMsg(mensagemAI, mensagemUsu):
                 conversas = json.load(f)
             except json.JSONDecodeError:
                 conversas = []
-            
-        nova_mensagem = {
+    else:
+        conversas = []
+    
+    nova_mensagem = {
         "mensagemUsu": mensagemUsu,
         "mensagemAI": mensagemAI,
         }
 
-        conversas.append(nova_mensagem)
+    conversas.append(nova_mensagem)
 
     with open(ARQUIVO_CONVERSAS, "w", encoding="utf-8") as f:
         json.dump(conversas, f, indent=4, ensure_ascii=False)

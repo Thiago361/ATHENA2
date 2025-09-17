@@ -67,3 +67,6 @@ contextoCvs.json
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+config.json
+contextoCvs.json

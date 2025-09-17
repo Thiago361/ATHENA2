@@ -1,6 +1,5 @@
 import unicodedata
-from functions import salvarJson
-from functions import carregarJson
+from functions import salvarJson, carregarJson
 from AthenaAIBrain import enviarMsgAi
 from init import athena_intro_no_loading
 import os

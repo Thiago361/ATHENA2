@@ -1,7 +1,7 @@
 import sys
 import time
 import os
-from colorama import init, Fore, Style
+from colorama import Fore
 
 def loading_bar():
     bar_length = 15 
@@ -45,7 +45,7 @@ def athena_intro_no_loading():
 |__/  |__/   \___/  |__/  |__/ \_______/|__/  |__/ \_______/
                                                                                                                                 
     """
-    print(ascii_art)
+    print(Fore.BLUE + ascii_art)
     time.sleep(1)
     
 def athena_intro_no_loading_ai():
