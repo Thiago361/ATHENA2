@@ -1,0 +1,25 @@
+# ATHENA2 - Dependências do Projeto
+# Assistente de IA Conversacional com Google Gemini
+
+# Core Dependencies
+google-generativeai>=0.8.5
+python-dotenv>=1.0.0
+colorama>=0.4.6
+
+# Google AI Dependencies (instaladas automaticamente)
+google-auth>=2.15.0
+google-api-core>=2.25.1
+google-api-python-client>=2.173.0
+
+# HTTP and Network
+httpx>=0.28.1
+requests>=2.32.5
+urllib3>=2.5.0
+
+# Data Processing
+pydantic>=2.11.9
+protobuf>=5.29.5
+
+# Utilities
+typing-extensions>=4.15.0
+annotated-types>=0.7.0
