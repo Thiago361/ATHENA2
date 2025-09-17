@@ -1,7 +1,15 @@
 import sys
 import time
 import os
-from colorama import Fore
+from colorama import Fore, init
+
+init(autoreset=True)
+
+def print_slow(texto, delay=0.002):
+    for char in texto:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(delay)
 
 def loading_bar():
     bar_length = 15 
@@ -10,46 +18,38 @@ def loading_bar():
         bar = "|" + "=" * i + "-" * (bar_length - i) + "|"
         sys.stdout.write(f"\r{bar} {percent}%")
         sys.stdout.flush()
-        time.sleep(0.1)  
+        time.sleep(0.1)
     print() 
 
+def athena_ascii_art():
+    ascii_art = r"""
+  /$$$$$$    /$$     /$$                                      /$$$$$$ 
+ /$$__  $$  | $$    | $$                                     /$$__  $$
+| $$  \ $$ /$$$$$$  | $$$$$$$   /$$$$$$  /$$$$$$$   /$$$$$$ |__/  \ $$
+| $$$$$$$$|_  $$_/  | $$__  $$ /$$__  $$| $$__  $$ |____  $$  /$$$$$$/
+| $$__  $$  | $$    | $$  \ $$| $$$$$$$$| $$  \ $$  /$$$$$$$ /$$____/ 
+| $$  | $$  | $$ /$$| $$  | $$| $$_____/| $$  | $$ /$$__  $$| $$      
+| $$  | $$  |  $$$$/| $$  | $$|  $$$$$$$| $$  | $$|  $$$$$$$| $$$$$$$$
+|__/  |__/   \___/  |__/  |__/ \_______/|__/  |__/ \_______/|________/
+
+
+"""
+    print(Fore.BLUE)
+    print_slow(ascii_art)
+
 def athena_intro():
-    ascii_art = r"""
-   /$$$$$$    /$$     /$$                                    
- /$$__  $$  | $$    | $$                                    
-| $$  \ $$ /$$$$$$  | $$$$$$$   /$$$$$$  /$$$$$$$   /$$$$$$ 
-| $$$$$$$$|_  $$_/  | $$__  $$ /$$__  $$| $$__  $$ |____  $$
-| $$__  $$  | $$    | $$  \ $$| $$$$$$$$| $$  \ $$  /$$$$$$$
-| $$  | $$  | $$ /$$| $$  | $$| $$_____/| $$  | $$ /$$__  $$
-| $$  | $$  |  $$$$/| $$  | $$|  $$$$$$$| $$  | $$|  $$$$$$$
-|__/  |__/   \___/  |__/  |__/ \_______/|__/  |__/ \_______/
-                                                                                                                                
-    """
     loading_bar()
-    os.system("cls")
-    print(f"\n {Fore.BLUE}✨ Bem-vindo! Eu sou a...")
     time.sleep(1)
     os.system("cls")
-    print(Fore.BLUE + ascii_art)
+    athena_ascii_art()
     time.sleep(1)
-    
+
 def athena_intro_no_loading():
-    ascii_art = r"""
-   /$$$$$$    /$$     /$$                                    
- /$$__  $$  | $$    | $$                                    
-| $$  \ $$ /$$$$$$  | $$$$$$$   /$$$$$$  /$$$$$$$   /$$$$$$ 
-| $$$$$$$$|_  $$_/  | $$__  $$ /$$__  $$| $$__  $$ |____  $$
-| $$__  $$  | $$    | $$  \ $$| $$$$$$$$| $$  \ $$  /$$$$$$$
-| $$  | $$  | $$ /$$| $$  | $$| $$_____/| $$  | $$ /$$__  $$
-| $$  | $$  |  $$$$/| $$  | $$|  $$$$$$$| $$  | $$|  $$$$$$$
-|__/  |__/   \___/  |__/  |__/ \_______/|__/  |__/ \_______/
-                                                                                                                                
-    """
-    print(Fore.BLUE + ascii_art)
+    athena_ascii_art()
     time.sleep(1)
-    
+
 def athena_intro_no_loading_ai():
-    ascii_art = r"""
+    ascii_art_ai = r"""
     /$$$$$$    /$$     /$$                                                                            
  /$$__  $$  | $$    | $$                                                                            
 | $$  \ $$ /$$$$$$  | $$$$$$$   /$$$$$$  /$$$$$$$   /$$$$$$         /$$$$$$   /$$$$$$  /$$  /$$  /$$
@@ -61,6 +61,11 @@ def athena_intro_no_loading_ai():
                                                                    /$$  \ $$                        
                                                                   |  $$$$$$/                        
                                                                    \______/                               
-    """
-    print(ascii_art)
+"""
+    print(Fore.BLUE)
+    print_slow(ascii_art_ai)
     time.sleep(1)
+
+# Teste
+if __name__ == "__main__":
+    athena_intro()
