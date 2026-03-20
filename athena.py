@@ -1,6 +1,6 @@
 import time
 from init import athena_intro
-from Athenabrain import responder
+from athenabrain import responder
 from functions import carregarJson, salvarMsg
 from colorama import Fore, init
 
@@ -10,7 +10,7 @@ if __name__ == "__main__":
     athena_intro()
 
 while True: 
-    pergunta = input(f"{Fore.LIGHTWHITE_EX}você: ")
+    pergunta = input(f"{Fore.LIGHTWHITE_EX} \nvocê: ")
     config = carregarJson()
     if not config or len(config) < 1:
         pergunta = "configuracao"
@@ -20,7 +20,7 @@ while True:
     
     resposta = responder(pergunta)
     time.sleep(0.1)
-    print(f"\n{Fore.BLACK}Athena: {resposta}")
+    print(f"\n{Fore.CYAN}Athena: {resposta}")
     salvarMsg(mensagemAI=resposta, mensagemUsu=pergunta)
     
     

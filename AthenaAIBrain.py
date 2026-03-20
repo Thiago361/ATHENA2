@@ -44,7 +44,7 @@ Pergunta do usuário:
 {perguntaUSU}
 """
     genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-    model = genai.GenerativeModel('gemini-2.0-flash-001')
+    model = genai.GenerativeModel('gemini-2.5-flash')
     response = model.generate_content(contexto_formatado)
     return response.text
 
