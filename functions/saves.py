@@ -61,4 +61,8 @@ def carregarMsgs():
         with open(ARQUIVO_CONVERSAS, "r", encoding="utf-8") as f:
             return json.load(f)
 
+def ExcluirMsgs():
+    if os.path.exists(ARQUIVO_CONVERSAS) and os.path.getsize(ARQUIVO_CONVERSAS) > 0:
+        with open(ARQUIVO_CONVERSAS, "w", encoding="utf-8") as f: 
+            return json.dump([],f)
 

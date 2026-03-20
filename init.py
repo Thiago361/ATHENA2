@@ -3,6 +3,7 @@ import time
 import os
 from colorama import Fore, init
 import random
+from functions import ExcluirMsgs
 
 init(autoreset=True)
 
@@ -40,6 +41,7 @@ def athena_ascii_art():
 
 def athena_intro():
     loading_bar()
+    ExcluirMsgs()
     time.sleep(1)
     os.system("cls")
     athena_ascii_art()
