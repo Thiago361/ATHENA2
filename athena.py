@@ -13,8 +13,9 @@ if __name__ == "__main__":
     
 console = Console()
 
-while True: 
-    pergunta = input(f"{Fore.LIGHTWHITE_EX} \n> ")
+while True:
+    pergunta = input(f"{Fore.LIGHTWHITE_EX} > ")
+    print('')
     config = carregarJson()
     if not config or len(config) < 1:
         pergunta = "configuracao"
@@ -24,8 +25,8 @@ while True:
     
     resposta = responder(pergunta)
     time.sleep(0.1)
-    print('\n')
     console.print(Panel(f"> {resposta}", title="Athena", border_style="grey37"))
+    print('')
     salvarMsg(mensagemAI=resposta, mensagemUsu=pergunta)
     
     

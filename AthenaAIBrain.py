@@ -1,7 +1,9 @@
 import os
+import time
 import google.generativeai as genai
 from dotenv import load_dotenv
 from functions import carregarMsgs, carregarJson
+from google.api_core.exceptions import ResourceExhausted
 
 os.environ["GRPC_VERBOSITY"] = "NONE"
 os.environ["GLOG_minloglevel"] = "2"
@@ -43,8 +45,25 @@ Histórico das últimas mensagens pra contexto da conversa:
 Pergunta do usuário:
 {perguntaUSU}
 """
-    genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-    model = genai.GenerativeModel('gemini-2.5-flash')
-    response = model.generate_content(contexto_formatado)
-    return response.text
+    try:
+        genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+        model = genai.GenerativeModel('gemini-2.5-flash-lite')
+        response = model.generate_content(contexto_formatado)
+        return response.text
+    
+    except ResourceExhausted as e: 
+        print(f"Error na API : {e}")
+        print('Tentando uma nova solução...')
+        
+        time.sleep(3)
+        os.system('cls')
+        
+        genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+        model = genai.GenerativeModel('gemini-2.5-flash')
+        response = model.generate_content(contexto_formatado)
+        return response.text
+        
+    
+    except Exception as e:
+        print(f"Error na API : {e}")
 
