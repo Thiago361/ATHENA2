@@ -1,15 +1,16 @@
 import os
 import time
-import google.generativeai as genai
+from google import genai
 from dotenv import load_dotenv
 from functions import carregarMsgs, carregarJson
 from google.api_core.exceptions import ResourceExhausted
 from contextsFunctions import contexto_athena
 
+load_dotenv()
 os.environ["GRPC_VERBOSITY"] = "NONE"
 os.environ["GLOG_minloglevel"] = "2"
-load_dotenv()
 
+client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 
 def enviarMsgAi(perguntaUSU): 
     ultimas_msgs = carregarMsgs() or []
@@ -27,9 +28,10 @@ Pergunta do usuário:
 {perguntaUSU}
 """
     try:
-        genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-        model = genai.GenerativeModel('gemini-2.5-flash-lite')
-        response = model.generate_content(contexto_formatado)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash-lite",
+            contents=contexto_formatado
+        )
         return response.text
     
     except ResourceExhausted as e: 
@@ -39,12 +41,11 @@ Pergunta do usuário:
         time.sleep(3)
         os.system('cls')
         
-        genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-        model = genai.GenerativeModel('gemini-2.5-flash')
-        response = model.generate_content(contexto_formatado)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=contexto_formatado
+        )
         return response.text
         
-    
     except Exception as e:
         print(f"Error na API : {e}")
-

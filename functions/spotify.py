@@ -11,4 +11,5 @@ def escutarMusica(musicaEscolhida):
     pyautogui.write(musicaEscolhida)
     time.sleep(1)
     pyautogui.hotkey("shift", "enter")
+    pyautogui.press("esc")
     pyautogui.hotkey("alt", "tab")
