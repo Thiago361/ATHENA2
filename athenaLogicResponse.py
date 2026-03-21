@@ -19,11 +19,13 @@ def responder(pergunta: str) -> str:
         return "Tela limpa e reiniciada! 😎"
     
     elif "configuracao" in pergunta or "config" in pergunta :
-        print("vamos fazer a sua configuração pra eu saber mais de você ☺️\n"
+        print("\nvamos fazer a sua configuração pra eu saber mais de você ☺️\n"
         "preciso que você me conte")
-        nomeUsuario = input("seu nome ou como você gosta de ser chamado(a): ")
-        cidadeUsuario = input("sua cidade: ")
+        nomeUsuario = input("\nseu nome ou como você gosta de ser chamado(a): ")
+        cidadeUsuario = input("\nsua cidade: ")
         salvarJson(nomeUsuario, cidadeUsuario)
+        os.system("cls")
+        athena_intro_no_loading()
         
     resposta = enviarMsgAi(perguntaUSU=pergunta)
     return resposta
