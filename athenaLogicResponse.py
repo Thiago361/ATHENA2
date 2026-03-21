@@ -1,7 +1,10 @@
 import unicodedata
-from functions import salvarJson, carregarJson
+from functions import salvarJson
 from AthenaAIBrain import enviarMsgAi
 from init import athena_intro_no_loading
+from functions import escutarMusica
+import json
+from contextosFunctions import contextoFuncaoSpotify
 import os
 
 def remover_acentos(texto: str) -> str:
@@ -26,7 +29,13 @@ def responder(pergunta: str) -> str:
         salvarJson(nomeUsuario, cidadeUsuario)
         os.system("cls")
         athena_intro_no_loading()
-        
+    
+    elif 'spotify' in pergunta:
+       resposta = enviarMsgAi(contextoFuncaoSpotify + pergunta)
+       dados = json.loads(resposta)
+       escutarMusica(dados["musica"])
+       return dados["frase"]
+       
     resposta = enviarMsgAi(perguntaUSU=pergunta)
     return resposta
     
