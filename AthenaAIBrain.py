@@ -10,6 +10,15 @@ load_dotenv()
 os.environ["GRPC_VERBOSITY"] = "NONE"
 os.environ["GLOG_minloglevel"] = "2"
 
+apiKeyGemini = os.getenv("GEMINI_API_KEY")
+
+if not apiKeyGemini:
+    print("precisamos configurar sua API key antes de continuar...")
+    AttChavekeyGemini = input("Qual sua API key do Gemini : ")
+    with open(".env", "a") as f: 
+        f.write(f"\nGEMINI_API_KEY={AttChavekeyGemini}")
+    load_dotenv()
+
 client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 
 def enviarMsgAi(perguntaUSU): 
