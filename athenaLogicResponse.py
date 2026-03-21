@@ -4,14 +4,14 @@ from AthenaAIBrain import enviarMsgAi
 from init import athena_intro_no_loading
 from functions import escutarMusica
 import json
-from contextosFunctions import contextoFuncaoSpotify
+from contextsFunctions import contextoFuncaoSpotify
 import os
 
 def remover_acentos(texto: str) -> str:
     return ''.join(
         c for c in unicodedata.normalize('NFD', texto)
         if unicodedata.category(c) != 'Mn'
-    )
+    ) 
 
 def responder(pergunta: str) -> str:
     pergunta = remover_acentos(pergunta.lower())
@@ -35,6 +35,8 @@ def responder(pergunta: str) -> str:
        dados = json.loads(resposta)
        escutarMusica(dados["musica"])
        return dados["frase"]
+   
+    
        
     resposta = enviarMsgAi(perguntaUSU=pergunta)
     return resposta
