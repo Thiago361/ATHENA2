@@ -13,9 +13,11 @@ os.environ["GLOG_minloglevel"] = "2"
 apiKeyGemini = os.getenv("GEMINI_API_KEY")
 
 if not apiKeyGemini:
-    print("🔑 Configuração necessária")
-    print("Para continuar, informe sua API key do Gemini.")
-    AttChavekeyGemini = input("👉 API Key: ")
+    print("✧ Inicializando interface neural...")
+    time.sleep(1)
+    print("Para prosseguir com a síntese, valide sua identidade digital.")
+    time.sleep(1)
+    AttChavekeyGemini = input("▮ Autenticação (API Key Gemini): ")
     with open(".env", "a") as f: 
         f.write(f"\nGEMINI_API_KEY={AttChavekeyGemini}")
     load_dotenv()
