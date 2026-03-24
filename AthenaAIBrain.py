@@ -2,7 +2,7 @@ import os
 import time
 from google import genai
 from dotenv import load_dotenv
-from functions import carregarMsgs, carregarJson
+from functions import carregarMsgs, carregarJson, criarVariaveisDeAmbiente
 from google.api_core.exceptions import ResourceExhausted
 from contextsFunctions import AvaliarMensagensContext, contexto_athena
 
@@ -18,16 +18,12 @@ os.environ["GLOG_minloglevel"] = "2"
 apiKeyGemini = os.getenv("GEMINI_API_KEY")
 
 if not apiKeyGemini:
-    print("✧ Inicializando interface neural...")
-    time.sleep(1)
-    print("Para prosseguir com a síntese, valide sua identidade digital.")
-    time.sleep(1)
-    AttChavekeyGemini = input("▮ Autenticação (API Key Gemini): ")
-    with open(".env", "a") as f: 
-        f.write(f"\nGEMINI_API_KEY={AttChavekeyGemini}")
+    criarVariaveisDeAmbiente()
     load_dotenv()
 
 client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
+clienttwo = genai.Client(api_key=os.getenv('GEMINI_API_KEY_TWO'))
+
 
 def EvaluateMessages(perguntaUSU): 
     contexto_formatado = f"""
@@ -43,18 +39,34 @@ Pergunta do usuário:
         )
         return response.text
     
-    except ResourceExhausted as e: 
-        print(f"Error na API : {e}")
+    except ResourceExhausted as e:
         print('Tentando uma nova solução...')
         
         time.sleep(3)
         os.system('cls')
         
-        response = client.models.generate_content(
+        response = clienttwo.models.generate_content(
             model="gemini-2.5-flash",
             contents=contexto_formatado
         )
         return response.text
+    
+    except Exception as f:
+        erro = str(f)
+        if "API_KEY_INVALID" in erro:
+            print(f'ERROR NA API: {f}')
+        
+            time.sleep(3)
+            os.system("cls")
+            os.remove(".env")
+        
+            print("A chave informada anteriormente é inválida.")
+            print("Por favor, insira uma nova chave válida.\n")
+
+            time.sleep(3)
+            os.system("cls")
+            
+            criarVariaveisDeAmbiente()
         
     except Exception as e:
         print(f"Error na API : {e}")
@@ -75,13 +87,12 @@ def UtilityFunctions(perguntaUSU, contexto_msg):
         return response.text
     
     except ResourceExhausted as e: 
-        print(f"Error na API : {e}")
         print('Tentando uma nova solução...')
         
         time.sleep(3)
         os.system('cls')
         
-        response = client.models.generate_content(
+        response = clienttwo.models.generate_content(
             model="gemini-2.5-flash",
             contents=contexto_formatado
         )
@@ -112,7 +123,7 @@ def UtilityChat(perguntaUSU):
         return response.text
     
     except ResourceExhausted as e: 
-        print(f"Error na API : {e}")
+        print(f"Error na API")
         print('Tentando uma nova solução...')
         
         time.sleep(3)
@@ -120,6 +131,19 @@ def UtilityChat(perguntaUSU):
         
         response = client.models.generate_content(
             model="gemini-2.5-flash",
+            contents=contexto_formatado
+        )
+        return response.text
+    
+    except ResourceExhausted as e: 
+        print(f"Error na API")
+        print('Tentando uma nova solução...')
+        
+        time.sleep(3)
+        os.system('cls')
+        
+        response = clienttwo.models.generate_content(
+            model="gemini-3-flash-preview",
             contents=contexto_formatado
         )
         return response.text
