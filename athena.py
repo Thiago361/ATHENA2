@@ -22,9 +22,9 @@ while True:
     pergunta = input(f"{Fore.LIGHTWHITE_EX} > ")
     print('')
     config = carregarJson()
-    
+
     if not config or len(config) < 1:
-        pergunta = "configuracao"
+        pergunta = "config"
     
     if pergunta.lower() in ["sair", "exit", "quit"]:
         break

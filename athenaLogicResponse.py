@@ -18,7 +18,7 @@ def responder(pergunta: str) -> str:
         athena_intro_no_loading()
         return "Tela limpa e reiniciada! 😎"
     
-    elif "configuracao" in pergunta or "config" in pergunta :
+    elif "config" in pergunta :
         print("\nvamos fazer a sua configuração pra eu saber mais de você ☺️\n"
         "preciso que você me conte")
         nomeUsuario = input("\nseu nome ou como você gosta de ser chamado(a): ")
@@ -46,8 +46,8 @@ def responder(pergunta: str) -> str:
     
     
         
-        
-    return resposta
+
+    return "Não entendi muito bem 😅"
     
     
     
