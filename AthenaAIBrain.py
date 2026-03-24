@@ -4,7 +4,12 @@ from google import genai
 from dotenv import load_dotenv
 from functions import carregarMsgs, carregarJson
 from google.api_core.exceptions import ResourceExhausted
-from contextsFunctions import contexto_athena
+from contextsFunctions import AvaliarMensagensContext, contexto_athena
+
+"""
+Camada de integração com a IA.
+Responsável pela comunicação com a API, envio de contexto e tratamento de respostas.
+"""
 
 load_dotenv()
 os.environ["GRPC_VERBOSITY"] = "NONE"
@@ -24,24 +29,84 @@ if not apiKeyGemini:
 
 client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 
-def enviarMsgAi(perguntaUSU): 
-    ultimas_msgs = carregarMsgs() or []
-    contexto_do_usuario = carregarJson() or []
-    
+def EvaluateMessages(perguntaUSU): 
     contexto_formatado = f"""
-{contexto_athena}
-
-oque você precisa saber sobre o usuario:{contexto_do_usuario} 
-
-Histórico das últimas mensagens pra contexto da conversa:
-{ultimas_msgs}
+{AvaliarMensagensContext}
 
 Pergunta do usuário:
 {perguntaUSU}
 """
     try:
         response = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
+            model="gemini-3-flash-preview",
+            contents=contexto_formatado
+        )
+        return response.text
+    
+    except ResourceExhausted as e: 
+        print(f"Error na API : {e}")
+        print('Tentando uma nova solução...')
+        
+        time.sleep(3)
+        os.system('cls')
+        
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=contexto_formatado
+        )
+        return response.text
+        
+    except Exception as e:
+        print(f"Error na API : {e}")
+        
+            
+def UtilityFunctions(perguntaUSU, contexto_msg): 
+    contexto_formatado = f"""
+    {contexto_msg}
+
+    Mensagem do Usuario:
+    {perguntaUSU}
+    """
+    try:
+        response = client.models.generate_content(
+            model="gemini-3-flash-preview",
+            contents=contexto_formatado
+        )
+        return response.text
+    
+    except ResourceExhausted as e: 
+        print(f"Error na API : {e}")
+        print('Tentando uma nova solução...')
+        
+        time.sleep(3)
+        os.system('cls')
+        
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=contexto_formatado
+        )
+        return response.text
+        
+    except Exception as e:
+        print(f"Error na API : {e}")
+
+
+def UtilityChat(perguntaUSU): 
+    ultimas_msgs = carregarMsgs() or []
+    contexto_do_usuario = carregarJson() or []
+    
+    contexto_formatado = f"""
+    {contexto_athena}
+    
+    contexto das mensagens trocadas com o usuario:{ultimas_msgs},
+    o que você precisa saber sobre o usuario: {contexto_do_usuario}
+
+    Mensagem do Usuario:
+    {perguntaUSU}
+    """
+    try:
+        response = client.models.generate_content(
+            model="gemini-3-flash-preview",
             contents=contexto_formatado
         )
         return response.text

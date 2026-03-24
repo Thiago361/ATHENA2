@@ -1,17 +1,14 @@
-import unicodedata
-from functions import salvarJson
-from AthenaAIBrain import enviarMsgAi
+from functions import salvarJson, escutarMusica, limpar_json_resposta, remover_acentos
+from AthenaAIBrain import EvaluateMessages, UtilityFunctions, UtilityChat
 from init import athena_intro_no_loading
-from functions import escutarMusica
 import json
-from contextsFunctions import contextoFuncaoSpotify
 import os
+from contextsFunctions import contextoFuncaoSpotify
 
-def remover_acentos(texto: str) -> str:
-    return ''.join(
-        c for c in unicodedata.normalize('NFD', texto)
-        if unicodedata.category(c) != 'Mn'
-    ) 
+"""
+Camada de processamento de mensagens.
+Interpreta intenções do usuário e direciona para as funcionalidades apropriadas.
+"""
 
 def responder(pergunta: str) -> str:
     pergunta = remover_acentos(pergunta.lower())
@@ -29,16 +26,27 @@ def responder(pergunta: str) -> str:
         salvarJson(nomeUsuario, cidadeUsuario)
         os.system("cls")
         athena_intro_no_loading()
+
+    resposta = EvaluateMessages(perguntaUSU=pergunta)
+    resposta_limpa_AI = limpar_json_resposta(resposta)
+    resposta_json = json.loads(resposta_limpa_AI)
     
-    elif 'spotify' in pergunta:
-       resposta = enviarMsgAi(contextoFuncaoSpotify + pergunta)
-       dados = json.loads(resposta)
-       escutarMusica(dados["musica"])
-       return dados["frase"]
-   
+    if resposta_json["intent"] == "chat":
+        resposta_chat_raw = UtilityChat(pergunta)
+        resposta_chat_raw_limpa = limpar_json_resposta(resposta_chat_raw)
+        resposta_chat = json.loads(resposta_chat_raw_limpa)
+        return resposta_chat["resposta"]
     
-       
-    resposta = enviarMsgAi(perguntaUSU=pergunta)
+    elif resposta_json["intent"] == "spotify":
+        resposta_spotify_raw = UtilityFunctions(pergunta, contextoFuncaoSpotify)
+        resposta_spotify_raw_limpa = limpar_json_resposta(resposta_spotify_raw)
+        resposta_spotify = json.loads(resposta_spotify_raw_limpa)
+        escutarMusica(resposta_spotify["musica"])
+        return resposta_spotify["frase"]
+    
+    
+        
+        
     return resposta
     
     

@@ -6,6 +6,11 @@ from colorama import Fore, init
 from rich.console import Console
 from rich.panel import Panel
 
+"""
+Entry point da aplicação.
+Gerencia o loop principal, entrada do usuário e exibição das respostas.
+"""
+
 init()
 
 if __name__ == "__main__":
@@ -31,10 +36,3 @@ while True:
     print('')
     
     salvarMsg(mensagemAI=resposta, mensagemUsu=pergunta)
-    
-    
-    
-
-
-    
-
